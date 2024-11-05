@@ -5,7 +5,7 @@ import java.util.Iterator;
 /**
  * @author liuyichen
  * @version 1.0
- *front和array本身的值作为数组索引
+ *
  */
 @SuppressWarnings("ALL")
 public class ArrayQueue1<E> implements Queue<E>,Iterable<E> {
