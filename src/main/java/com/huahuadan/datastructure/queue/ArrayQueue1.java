@@ -35,6 +35,7 @@ public class ArrayQueue1<E> implements Queue<E>,Iterable<E> {
             return null;
         }
         E value = array[front];
+        array[front] = null; // help GC
         front = (front+1)%array.length;
         size--;
         return value;
