@@ -36,7 +36,7 @@ public class BlockingQueue2<E> implements BlockingQueue<E> {
 
     @Override
     public void offer(E e) throws InterruptedException {
-        int c;//来记录阻塞队列size被操作前的大小，对唤醒队列有帮组
+        int c;//来记录阻塞队列size被操作前的大小，对唤醒队列有帮助
         tailLock.lockInterruptibly();
         try {
             while (isFull()){
