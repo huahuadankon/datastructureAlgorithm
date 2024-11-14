@@ -1,23 +1,17 @@
 package com.huahuadan.datastructure.heap;
 
-import java.util.Arrays;
-
-/**
- * @author liuyichen
- * @version 1.0
- * @date 2024/11/13 21:09
- * @description 大顶堆实现
- */
-public class MaxHeap {
+public class MinHeap {
     int[] array;
     int size;
 
-    public MaxHeap(int capacity) {
+    public MinHeap(int capacity) {
         this.array = new int[capacity];
     }
+
     public boolean isFull() {
         return size == array.length;
     }
+
 
     /**
      * 获取堆顶元素
@@ -49,9 +43,8 @@ public class MaxHeap {
      */
     public int poll(int index) {
         int deleted = array[index];
-        swap(index, size - 1);
-        size--;
-        down(index);
+        up(Integer.MIN_VALUE, index);
+        poll();
         return deleted;
     }
 
@@ -72,7 +65,7 @@ public class MaxHeap {
      * @return 是否添加成功
      */
     public boolean offer(int offered) {
-        if(size == array.length){
+        if (size == array.length) {
             return false;
         }
         up(offered, size);
@@ -83,11 +76,11 @@ public class MaxHeap {
     // 将 offered 元素上浮: 直至 offered 小于父元素或到堆顶
     private void up(int offered, int index) {
         int child = index;
-        while (child > 0){
+        while (child > 0) {
             int parent = (child - 1) / 2;
-            if(offered > array[parent]){
+            if (offered < array[parent]) {
                 array[child] = array[parent];
-            }else {
+            } else {
                 break;
             }
             child = parent;
@@ -95,7 +88,7 @@ public class MaxHeap {
         array[child] = offered;
     }
 
-    public MaxHeap(int[] array) {
+    public MinHeap(int[] array) {
         this.array = array;
         this.size = array.length;
         heapify();
@@ -103,7 +96,7 @@ public class MaxHeap {
 
     // 建堆
     private void heapify() {
-        //找到最后一个非叶子节点的节点
+        // 如何找到最后这个非叶子节点  size / 2 - 1
         for (int i = size / 2 - 1; i >= 0; i--) {
             down(i);
         }
@@ -111,18 +104,18 @@ public class MaxHeap {
 
     // 将 parent 索引处的元素下潜: 与两个孩子较大者交换, 直至没孩子或孩子没它大
     private void down(int parent) {
-        int left = 2 * parent + 1;
+        int left = parent * 2 + 1;
         int right = left + 1;
-        int max = parent;
-        if(left < size && array[max] < array[left]) {
-            max = left;
+        int min = parent;
+        if (left < size && array[left] < array[min]) {
+            min = left;
         }
-        if(right < size && array[max] < array[right]) {
-            max = right;
+        if (right < size && array[right] < array[min]) {
+            min = right;
         }
-        if(max != parent) {
-            swap(parent, max);
-            down(max);
+        if (min != parent) { // 找到了更大的孩子
+            swap(min, parent);
+            down(min);
         }
     }
 
@@ -131,20 +124,5 @@ public class MaxHeap {
         int t = array[i];
         array[i] = array[j];
         array[j] = t;
-    }
-
-    public static void main(String[] args) {
-
-        int[] array = {2, 3, 1, 7, 6, 4, 5};
-        MaxHeap maxHeap = new MaxHeap(array);
-
-        System.out.println(Arrays.toString(maxHeap.array));
-        while (maxHeap.size>1){
-            maxHeap.swap(0,  maxHeap.size - 1);
-            maxHeap.size--;
-            maxHeap.down(0);
-        }
-        System.out.println(Arrays.toString(maxHeap.array));
-
     }
 }

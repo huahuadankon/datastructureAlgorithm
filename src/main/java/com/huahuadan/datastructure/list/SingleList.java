@@ -10,8 +10,6 @@ import java.util.function.Consumer;
 public class SingleList implements Iterable<Integer> {
     private Node head = null;
 
-
-
     /**
      * 节点类
      */
