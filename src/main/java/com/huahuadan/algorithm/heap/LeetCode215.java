@@ -26,7 +26,7 @@ public class LeetCode215 {
          return result;
     }
 
-    //小顶堆的揭发
+    //小顶堆的解法
     public int findKthLargest2(int[] numbers, int k) {
         MinHeap heap = new MinHeap(k);
         for (int i = 0; i < k; i++) {

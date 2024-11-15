@@ -47,6 +47,8 @@ public class LeetCode21 {
         }
     }
 
+
+
     public static void main(String[] args) {
         ListNode p1 = ListNode.of(1, 3, 5, 7, 8);
         ListNode p2 = ListNode.of(2, 4, 6, 8);
