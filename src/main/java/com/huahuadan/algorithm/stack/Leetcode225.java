@@ -55,3 +55,35 @@ public class Leetcode225 {
         return queue.isEmpty();
     }
 }
+
+/**
+ * 双队列模拟栈
+ */
+class MyStack {
+    Queue<Integer> queue1 = new LinkedList<>();
+    Queue<Integer> queue2 = new LinkedList<>();
+
+    public void push(int x) {
+        queue2.offer(x);
+        while (!queue1.isEmpty()) {
+            queue2.offer(queue1.poll());
+        }
+        // 交换queue1和queue2
+        Queue<Integer> temp = queue1; //关键点每一次添加都交换。
+        queue1 = queue2;
+        queue2 = temp;
+    }
+
+    public int pop() {
+        return queue1.poll();
+    }
+
+    public int top() {
+        return queue1.peek();
+    }
+
+    public boolean empty() {
+        return queue1.isEmpty();
+    }
+}
+

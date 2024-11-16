@@ -55,7 +55,7 @@ public class LeetCode103 {
         boolean odd = true; //是否为奇数层
         while (!queue.isEmpty()){
             int c2 = 0;//下一层节点个数
-            LinkedList<Integer> list = new LinkedList<>(); //保存每一层结果
+            LinkedList<Integer> list = new LinkedList<>(); //保存每一层结果,这是一个双端队列，可以
             for (int i = 0; i < c1; i++){
                 TreeNode node = queue.poll();
                 if(odd){
