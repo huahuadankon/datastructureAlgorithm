@@ -16,22 +16,25 @@ public class PostorderTraversal {
 
         while (current != null || !stack.isEmpty()) {
             // 不断深入左子树
-            while (current != null) {
+            if(current != null) {
                 stack.push(current);
                 current = current.left;
             }
-            // 查看栈顶节点
-            TreeNode peekNode = stack.peek();
-            // 如果右子树不存在或已被访问
-            if (peekNode.right == null || peekNode.right == lastVisited) {
-                // 访问当前节点
-                colorPrintln(peekNode.val, 32);
-                // 弹出栈顶节点，标记为已访问
-                lastVisited = stack.pop();
-            } else {
-                // 转向右子树
-                current = peekNode.right;
+            else {
+                // 查看栈顶节点
+                TreeNode peekNode = stack.peek();
+                // 如果右子树不存在或已被访问
+                if (peekNode.right == null || peekNode.right == lastVisited) {
+                    // 弹出栈顶节点，标记为已访问
+                    lastVisited = stack.pop();
+                    // 访问当前节点
+                    colorPrintln(lastVisited.val, 32);
+                } else {
+                    // 转向右子树
+                    current = peekNode.right;
+                }
             }
+
         }
     }
 

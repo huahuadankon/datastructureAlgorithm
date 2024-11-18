@@ -7,7 +7,7 @@ import org.w3c.dom.Node;
  * @author liuyichen
  * @version 1.0
  * @date 2024/11/17 20:23
- * @description 非递归实现前序遍历，利用栈
+ * @description 非递归实现前序遍历，利用栈，核心的一点就是不管是前序遍历还是中序，后序，其实经过的路径都是一样的。
  */
 public class PreorderTraversal {
 
