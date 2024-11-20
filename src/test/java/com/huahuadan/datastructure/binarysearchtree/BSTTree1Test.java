@@ -1,6 +1,9 @@
 package com.huahuadan.datastructure.binarysearchtree;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -148,6 +151,223 @@ class BSTTree1Test {
         assertEquals(8, tree.successor(7));
         assertNull(tree.successor(8));
     }
+
+    @Test
+    @DisplayName("删除叶子节点")
+    public void delete1() {
+        /*
+                     4
+                   /   \
+                  2     7
+                 / \   / \
+                1   3 6   8
+                     /
+                    5
+         */
+        BSTTree1.BSTNode n1 = new BSTTree1.BSTNode(1, 1);
+        BSTTree1.BSTNode n3 = new BSTTree1.BSTNode(3, 3);
+        BSTTree1.BSTNode n2 = new BSTTree1.BSTNode(2, 2, n1, n3);
+
+        BSTTree1.BSTNode n5 = new BSTTree1.BSTNode(5, 5);
+        BSTTree1.BSTNode n6 = new BSTTree1.BSTNode(6, 6, n5, null);
+        BSTTree1.BSTNode n8 = new BSTTree1.BSTNode(8, 8);
+        BSTTree1.BSTNode n7 = new BSTTree1.BSTNode(7, 7, n6, n8);
+        BSTTree1.BSTNode root1 = new BSTTree1.BSTNode(4, 4, n2, n7);
+
+        BSTTree1 tree1 = new BSTTree1();
+        tree1.root = root1;
+
+        assertEquals(1, tree1.remove(1));
+        assertEquals(3, tree1.remove(3));
+        assertEquals(5, tree1.remove(5));
+        assertEquals(8, tree1.remove(8));
+
+
+        /*
+                     4
+                   /   \
+                  2     7
+                       /
+                      6
+         */
+        BSTTree1.BSTNode x2 = new BSTTree1.BSTNode(2, 2);
+        BSTTree1.BSTNode x6 = new BSTTree1.BSTNode(6, 6);
+        BSTTree1.BSTNode x7 = new BSTTree1.BSTNode(7, 7, x6, null);
+        BSTTree1.BSTNode root2 = new BSTTree1.BSTNode(4, 4, x2, x7);
+        BSTTree1 tree2 = new BSTTree1();
+        tree2.root = root2;
+
+        assertTrue(isSameTree(tree1.root, tree2.root));
+    }
+
+    @Test
+    @DisplayName("删除只有一个孩子节点")
+    public void delete2() {
+        /*
+                     4
+                   /   \
+                  2     7
+                 / \   /
+                1   3 6
+                     /
+                    5
+         */
+        BSTTree1.BSTNode n1 = new BSTTree1.BSTNode(1, 1);
+        BSTTree1.BSTNode n3 = new BSTTree1.BSTNode(3, 3);
+        BSTTree1.BSTNode n2 = new BSTTree1.BSTNode(2, 2, n1, n3);
+
+        BSTTree1.BSTNode n5 = new BSTTree1.BSTNode(5, 5);
+        BSTTree1.BSTNode n6 = new BSTTree1.BSTNode(6, 6, n5, null);
+        BSTTree1.BSTNode n7 = new BSTTree1.BSTNode(7, 7, n6, null);
+        BSTTree1.BSTNode root1 = new BSTTree1.BSTNode(4, 4, n2, n7);
+
+        BSTTree1 tree1 = new BSTTree1();
+        tree1.root = root1;
+
+        assertEquals(7, tree1.remove(7));
+
+
+        /*
+                     4
+                   /   \
+                  2     6
+                 / \   /
+                1   3 5
+         */
+        BSTTree1.BSTNode x1 = new BSTTree1.BSTNode(1, 1);
+        BSTTree1.BSTNode x3 = new BSTTree1.BSTNode(3, 3);
+        BSTTree1.BSTNode x2 = new BSTTree1.BSTNode(2, 2, x1, x3);
+        BSTTree1.BSTNode x5 = new BSTTree1.BSTNode(5, 5);
+        BSTTree1.BSTNode x6 = new BSTTree1.BSTNode(6, 6, x5, null);
+        BSTTree1.BSTNode root2 = new BSTTree1.BSTNode(4, 4, x2, x6);
+        BSTTree1 tree2 = new BSTTree1();
+        tree2.root = root2;
+
+        assertTrue(isSameTree(tree1.root, tree2.root));
+    }
+
+    @Test
+    @DisplayName("删除有两个孩子节点, 被删除与后继不邻")
+    public void delete3() {
+        /*
+                      4
+                   /     \
+                  2      7
+                 / \   /   \
+                1   3 5     8
+                       \
+                        6
+         */
+        BSTTree1.BSTNode n1 = new BSTTree1.BSTNode(1, 1);
+        BSTTree1.BSTNode n3 = new BSTTree1.BSTNode(3, 3);
+        BSTTree1.BSTNode n2 = new BSTTree1.BSTNode(2, 2, n1, n3);
+
+        BSTTree1.BSTNode n6 = new BSTTree1.BSTNode(6, 6);
+        BSTTree1.BSTNode n5 = new BSTTree1.BSTNode(5, 5, null, n6);
+        BSTTree1.BSTNode n8 = new BSTTree1.BSTNode(8, 8);
+        BSTTree1.BSTNode n7 = new BSTTree1.BSTNode(7, 7, n5, n8);
+        BSTTree1.BSTNode root1 = new BSTTree1.BSTNode(4, 4, n2, n7);
+
+        BSTTree1 tree1 = new BSTTree1();
+        tree1.root = root1;
+
+        assertEquals(4, tree1.remove(4));
+
+
+        /*
+                      5
+                   /     \
+                  2      7
+                 / \   /   \
+                1   3 6     8
+
+         */
+        BSTTree1.BSTNode x1 = new BSTTree1.BSTNode(1, 1);
+        BSTTree1.BSTNode x3 = new BSTTree1.BSTNode(3, 3);
+        BSTTree1.BSTNode x2 = new BSTTree1.BSTNode(2, 2, x1, x3);
+
+        BSTTree1.BSTNode x6 = new BSTTree1.BSTNode(6, 6);
+        BSTTree1.BSTNode x8 = new BSTTree1.BSTNode(8, 8);
+        BSTTree1.BSTNode x7 = new BSTTree1.BSTNode(7, 7, x6, x8);
+        BSTTree1.BSTNode root2 = new BSTTree1.BSTNode(5, 5, x2, x7);
+        BSTTree1 tree2 = new BSTTree1();
+        tree2.root = root2;
+
+        assertTrue(isSameTree(tree1.root, tree2.root));
+    }
+
+    @Test
+    @DisplayName("删除有两个孩子节点, 被删除与后继相邻")
+    public void delete4() {
+        /*
+                     4
+                   /   \
+                  2     5
+                 / \     \
+                1   3     6
+
+         */
+        BSTTree1.BSTNode n1 = new BSTTree1.BSTNode(1, 1);
+        BSTTree1.BSTNode n3 = new BSTTree1.BSTNode(3, 3);
+        BSTTree1.BSTNode n2 = new BSTTree1.BSTNode(2, 2, n1, n3);
+
+        BSTTree1.BSTNode n6 = new BSTTree1.BSTNode(6, 6);
+        BSTTree1.BSTNode n5 = new BSTTree1.BSTNode(5, 5, null, n6);
+        BSTTree1.BSTNode root1 = new BSTTree1.BSTNode(4, 4, n2, n5);
+
+        BSTTree1 tree1 = new BSTTree1();
+        tree1.root = root1;
+
+        assertEquals(4, tree1.remove(4));
+
+
+        /*
+                     5
+                   /  \
+                  2    6
+                 / \
+                1   3
+
+         */
+        BSTTree1.BSTNode x1 = new BSTTree1.BSTNode(1, 1);
+        BSTTree1.BSTNode x3 = new BSTTree1.BSTNode(3, 3);
+        BSTTree1.BSTNode x2 = new BSTTree1.BSTNode(2, 2, x1, x3);
+
+        BSTTree1.BSTNode x6 = new BSTTree1.BSTNode(6, 6);
+        BSTTree1.BSTNode root2 = new BSTTree1.BSTNode(5, 5, x2, x6);
+        BSTTree1 tree2 = new BSTTree1();
+        tree2.root = root2;
+
+        assertTrue(isSameTree(tree1.root, tree2.root));
+    }
+
+    @Test
+    public void less() {
+        /*
+                 4
+               /   \
+              2     6
+             / \   / \
+            1   3 5   7
+         */
+        BSTTree1.BSTNode n1 = new BSTTree1.BSTNode(1, 1);
+        BSTTree1.BSTNode n3 = new BSTTree1.BSTNode(3, 3);
+        BSTTree1.BSTNode n2 = new BSTTree1.BSTNode(2, 2, n1, n3);
+
+        BSTTree1.BSTNode n5 = new BSTTree1.BSTNode(5, 5);
+        BSTTree1.BSTNode n7 = new BSTTree1.BSTNode(7, 7);
+        BSTTree1.BSTNode n6 = new BSTTree1.BSTNode(6, 6, n5, n7);
+        BSTTree1.BSTNode root = new BSTTree1.BSTNode(4, 4, n2, n6);
+
+        BSTTree1 tree = new BSTTree1();
+        tree.root = root;
+
+        assertIterableEquals(List.of(1, 2, 3, 4, 5), tree.less(6));
+        assertIterableEquals(List.of(7), tree.greater(6));
+        assertIterableEquals(List.of(3, 4, 5), tree.between(3, 5));
+//          tree.greater(6);
+    }
+
 
 
 }
