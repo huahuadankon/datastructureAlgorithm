@@ -95,6 +95,7 @@ public class RedBlackTree {
     }
 
     // 右旋操作：将粉色节点 `pink` 向右旋转，黄色节点 `yellow` 成为新的子树根节点。
+    //注意，旋转操作并不会改变节点自身引用关系，只是改变每个节点的right,left,parent的关系
     private void rightRotate(Node pink) {
     /*
        初始树形：
@@ -233,8 +234,7 @@ public class RedBlackTree {
         Node inserted = new Node(key, value);
         if (parent == null) {//树为空
             root = inserted;
-        }
-        if (key < parent.key) {
+        }else if (key < parent.key) {
             parent.left = inserted;
             inserted.parent = parent;
         } else {
@@ -247,7 +247,7 @@ public class RedBlackTree {
 
     /**
      * 修复红红冲突，确保红黑树的平衡和性质不被破坏。
-     * 1. 通过颜色调整和旋转，解决新插入节点导致的红红相邻问题。
+     * 通过颜色调整和旋转，解决新插入节点导致的红红相邻问题。
      *
      * @param x 新插入的节点
      */
@@ -261,128 +261,264 @@ public class RedBlackTree {
         if (isBlack(x.parent)) {
             return;
         }
-        // 情况3：父节点和叔叔节点都是红色
-        // 处理方式：将父节点和叔叔节点涂黑，祖父节点涂红，对祖父递归修复
+        // 获取相关节点
         Node parent = x.parent;
         Node uncle = x.uncle();
         Node grandparent = parent.parent;
+
+        // 情况3：父节点和叔叔节点都是红色
         if (isRed(uncle)) {
-            parent.color = Color.BLACK;
-            uncle.color = Color.BLACK;
-            grandparent.color = Color.RED;
-            fixRedRed(grandparent);
+            parent.color = Color.BLACK;  // 父节点变黑
+            uncle.color = Color.BLACK;  // 叔叔节点变黑
+            grandparent.color = Color.RED;  // 祖父节点变红 为了保证到叶子节点的黑高不变
+            fixRedRed(grandparent);  // 对祖父递归修复
             return;
         }
-        // 情况4：父节点红色、叔叔节点黑色，需要旋转调整
-        if (parent.isLeftChild() && x.isLeftChild()) {// LL：父为祖父左子，x为父左子
-         /*
-        旋转前（LL冲突）：
-                  (G R)           <- 红色祖父节点
-                 /
-              (P R)               <- 红色父节点
-             /
-          (X R)                   <- 红色插入节点
-         /
-      (A B)                       <- 黑色左子节点 */
-            parent.color = Color.BLACK;          // 父节点变黑
-            grandparent.color = Color.RED;       // 祖父节点变红
-            rightRotate(grandparent);      // 对祖父节点右旋
-        /*
-       旋转后：
-                  (P B)           <- 父节点变为新的子树根
-                 /     \
-              (X R)   (G R)       <- 祖父节点右下沉
-             /           \
-          (A B)         (C B)     <- 黑色其他子节点保持不变
-        */
-        } else if (parent.isLeftChild()) {// LR：父为祖父左子，x为父右子
-            /*
-        旋转前（LR冲突）：
-                  (G R)           <- 红色祖父节点
-                 /
-              (P R)               <- 红色父节点
-                 \
-                 (X R)            <- 红色插入节点
-                      \
-                      (D B)       <- 黑色右子节点*/
-            leftRotate(parent);// 对父节点左旋，将其转化为LL冲突
-        /*
-        左旋后：
-                  (G R)
-                 /
-              (X R)               <- 新的父节点
-             /
-          (P R)                   <- 原父节点左下沉
-             \
-             (D B)                <- 原黑色右子节点保持不变*/
-            x.color = Color.BLACK;               // 当前节点（X）变黑
-            grandparent.color = Color.RED;       // 祖父节点变红
-            rightRotate(grandparent);      // 对祖父节点右旋
-            /*
-            最终结果：
-                  (X B)           <- 新的子树根节点
-                 /     \
-              (P R)   (G R)       <- 原祖父节点右下沉
-                 \        \
-                 (D B)   (C B)    <- 黑色其他子节点保持不变
-            */
 
-        } else if (!x.isLeftChild()) {// RR：父为祖父右子，x为父右子
-             /*
-        旋转前（RR冲突）：
-                  (G R)           <- 红色祖父节点
-                     \
-                      (P R)       <- 红色父节点
-                           \
-                           (X R)  <- 红色插入节点
-                              \
-                              (F B) <- 黑色右子节点
-        */
-            parent.color = Color.BLACK;          // 父节点变黑
-            grandparent.color = Color.RED;       // 祖父节点变红
-            leftRotate(grandparent);       // 对祖父节点左旋
+        // 情况4：父节点红色，叔叔节点黑色，需要旋转调整
+        if (parent.isLeftChild() && x.isLeftChild()) { // LL：父为祖父左子，x为父左子
         /*
-        旋转后：
-                  (P B)           <- 父节点变为新的子树根
-                 /     \
-              (G R)   (X R)       <- 祖父节点左下沉
-                       \
-                       (F B)      <- 黑色其他子节点保持不变
+        旋转前：      (G B)                     旋转后：      (P B)
+                    /                                    /     \
+                 (P R)                                (X R)   (G R)
+                /
+             (X R)
+             这里需要注意的时G一定是黑色，要不然在新增节点前就不满足红黑树的特性了
         */
+            parent.color = Color.BLACK;
+            grandparent.color = Color.RED;
+            rightRotate(grandparent);
+        } else if (parent.isLeftChild()) { // LR：父为祖父左子，x为父右子
+        /*
+        左旋前：      (G B)                     左旋后：      (G B)                     右旋后：      (X B)
+                    /                                    /                                    /     \
+                 (P R)                                (X R)                                (P R)   (G R)
+                    \                                /
+                   (X R)                         (P R)
+
+                只旋转一次，会导致当前节点与祖父节点产生红红冲突
+        */
+            leftRotate(parent);
+            x.color = Color.BLACK;
+            grandparent.color = Color.RED;
+            rightRotate(grandparent);
+        } else if (!x.isLeftChild()) { // RR：父为祖父右子，x为父右子
+        /*
+        旋转前：      (G B)                     旋转后：        (P B)
+                        \                                   /     \
+                         (P R)                          (G R)   (X R)
+                              \
+                              (X R)
+
+        */
+            parent.color = Color.BLACK;
+            grandparent.color = Color.RED;
+            leftRotate(grandparent);
         } else { // RL：父为祖父右子，x为父左子
         /*
-        旋转前（RL冲突）：
-                  (G R)           <- 红色祖父节点
-                     \
-                      (P R)       <- 红色父节点
-                     /
-                  (X R)           <- 红色插入节点
-                 /
-              (E B)               <- 黑色左子节点
-         */
-            rightRotate(parent);           // 对父节点右旋，将其转化为RR冲突
-        /*
-        右旋后：
-                  (G R)
-                     \
-                      (X R)       <- 新的父节点
-                         \
-                         (P R)    <- 原父节点右下沉
-                        /
-                     (E B)        <- 黑色其他子节点保持不变
+        右旋前：      (G B)                     右旋后：      (G B)                     左旋后：      (X B)
+                        \                                    \                                   /     \
+                         (P R)                                (X R)                           (G R)   (P R)
+                        /                                       \
+                     (X R)                                      (P R)
         */
-            x.color = Color.BLACK;               // 当前节点（X）变黑
-            grandparent.color = Color.RED;       // 祖父节点变红
-            leftRotate(grandparent);       // 对祖父节点左旋
-        /*
-        最终结果：
-                  (X B)           <- 新的子树根节点
-                 /     \
-              (G R)   (P R)       <- 原祖父节点左下沉
-                       /
-                    (E B)         <- 黑色其他子节点保持不变
-        */
+            rightRotate(parent);
+            x.color = Color.BLACK;
+            grandparent.color = Color.RED;
+            leftRotate(grandparent);
         }
     }
+
+    /**
+     * 删除
+     * <br>
+     * 正常删、会用到李代桃僵技巧、遇到黑黑不平衡进行调整
+     *
+     * @param key 键
+     */
+    public void remove(int key) {
+        Node deleted = find(key);
+        if (deleted == null) {
+            return;
+        }
+        doRemove(deleted);
+    }
+
+    public boolean contains(int key) {
+        return find(key) != null;
+    }
+
+    // 查找删除节点
+    private Node find(int key) {
+        Node p = root;
+        while (p != null) {
+            if (key < p.key) {
+                p = p.left;
+            } else if (p.key < key) {
+                p = p.right;
+            } else {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    // 查找剩余节点,也就是待删除节点的后继节点
+    private Node findReplaced(Node deleted) {
+        if (deleted.left == null && deleted.right == null) {
+            return null;
+        }
+        if (deleted.left == null) {
+            return deleted.right;
+        }
+        if (deleted.right == null) {
+            return deleted.left;
+        }
+        Node s = deleted.right;
+        while (s.left != null) {
+            s = s.left;
+        }
+        return s;
+    }
+
+    // 处理双黑 (case3、case4、case5)，处理双黑，当前节点也就是x一定是叶子节点
+    private void fixDoubleBlack(Node x) {
+        if (x == root) {
+            return;
+        }
+        Node parent = x.parent;
+        Node sibling = x.sibling();
+        // case 3 兄弟节点是红色
+        if (isRed(sibling)) {
+            if (x.isLeftChild()) {
+                leftRotate(parent);
+            } else {
+                rightRotate(parent);
+            }//为了让兄弟节点成为父节点，再让兄弟节点变黑，原来的父节点变红
+            parent.color = Color.RED;
+            sibling.color = Color.BLACK;
+            fixDoubleBlack(x);
+            return;
+        }
+        if (sibling != null) {
+            // case 4 兄弟是黑色, 两个侄子也是黑色
+            if (isBlack(sibling.left) && isBlack(sibling.right)) {
+                sibling.color = Color.RED;
+                if (isRed(parent)) {
+                    parent.color = Color.BLACK;
+                } else {
+                    fixDoubleBlack(parent);
+                }
+            }
+            // case 5 兄弟是黑色, 侄子有红色
+            else {
+                // LL
+                if (sibling.isLeftChild() && isRed(sibling.left)) {
+                    rightRotate(parent);
+                    sibling.left.color = Color.BLACK;
+                    sibling.color = parent.color;
+                }
+                // LR
+                else if (sibling.isLeftChild() && isRed(sibling.right)) {
+                    sibling.right.color = parent.color;
+                    leftRotate(sibling);
+                    rightRotate(parent);
+                }
+                // RL
+                else if (!sibling.isLeftChild() && isRed(sibling.left)) {
+                    sibling.left.color = parent.color;
+                    rightRotate(sibling);
+                    leftRotate(parent);
+                }
+                // RR
+                else {
+                    leftRotate(parent);
+                    sibling.right.color = Color.BLACK;
+                    sibling.color = parent.color;
+                }
+                parent.color = Color.BLACK;
+            }
+        } else {
+            // @TODO 实际也不会出现，触发双黑后，兄弟节点不会为 null
+            fixDoubleBlack(parent);
+        }
+    }
+
+    private void doRemove(Node deleted) {
+        Node replaced = findReplaced(deleted);
+        Node parent = deleted.parent;
+        // 没有孩子
+        if (replaced == null) {
+            // case 1 删除的是根节点
+            if (deleted == root) {
+                root = null;
+            } else {
+                if (isBlack(deleted)) {
+                    // 复杂调整
+                    fixDoubleBlack(deleted);
+                } else {
+                    // 红色叶子, 无需任何处理
+                }
+                if (deleted.isLeftChild()) {
+                    parent.left = null;
+                } else {
+                    parent.right = null;
+                }
+                deleted.parent = null;
+            }
+            return;
+        }
+        // 有一个孩子
+        if (deleted.left == null || deleted.right == null) {
+            // case 1 删除的是根节点
+            if (deleted == root) {
+                root.key = replaced.key;
+                root.value = replaced.value;
+                // 处理替代节点是否为单节点的情况
+                if (replaced.left != null || replaced.right != null) {
+                    // 如果替代节点有子节点，则重新连接到根节点
+                    root.left = replaced.left;
+                    root.right = replaced.right;
+                    if (replaced.left != null) {
+                        replaced.left.parent = root;
+                    }
+                    if (replaced.right != null) {
+                        replaced.right.parent = root;
+                    }
+                } else {
+                    // 如果替代节点是单节点，则直接清空左右子节点
+                    root.left = root.right = null;
+                }
+            } else {
+                if (deleted.isLeftChild()) {
+                    parent.left = replaced;
+                } else {
+                    parent.right = replaced;
+                }
+                replaced.parent = parent;
+                deleted.left = deleted.right = deleted.parent = null;
+                if (isBlack(deleted) && isBlack(replaced)) {
+                    // 复杂处理 @TODO 实际不会有这种情况 因为只有一个孩子时 被删除节点是黑色 那么剩余节点只能是红色不会触发双黑
+                    //因为只有一个孩子，那么待删除节点和后继节点一定是相邻的
+                    fixDoubleBlack(replaced);
+                } else {
+                    // case 2 删除是黑，剩下是红，只需要让replaced变成黑色，维持黑色的数量平衡
+                    replaced.color = Color.BLACK;
+                }
+            }
+            return;
+        }
+        // case 0 有两个孩子 => 有一个孩子 或 没有孩子
+        //这时候找到的replaced一定没有左孩子。
+        int t = deleted.key;
+        deleted.key = replaced.key;
+        replaced.key = t;
+
+        Object v = deleted.value;
+        deleted.value = replaced.value;
+        replaced.value = v;
+        doRemove(replaced);
+    }
+
 }
 
