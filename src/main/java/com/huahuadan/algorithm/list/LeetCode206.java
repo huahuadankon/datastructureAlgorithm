@@ -25,8 +25,8 @@ public class LeetCode206 {
         if (p == null || p.next == null) { // 不足两个节点
             return p; // 最后一个节点
         }
-        ListNode last = reverseList(p.next);
-        p.next.next = p;
+        ListNode last = reverseList2(p.next);
+        p.next.next = p; //当前节点
         p.next = null;
         return last;
     }
