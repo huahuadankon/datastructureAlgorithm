@@ -1,4 +1,4 @@
-package com.huahuadan.algorithm.sort;
+package com.huahuadan.algorithm.search;
 
 /**
  * 二分查找

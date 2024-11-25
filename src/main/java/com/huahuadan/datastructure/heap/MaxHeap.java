@@ -6,7 +6,7 @@ import java.util.Arrays;
  * @author liuyichen
  * @version 1.0
  * @date 2024/11/13 21:09
- * @description 大顶堆实现
+ * @description 大顶堆实现，堆是一棵满二叉树
  */
 public class MaxHeap {
     int[] array;
@@ -85,7 +85,7 @@ public class MaxHeap {
         int child = index;
         while (child > 0){
             int parent = (child - 1) / 2;
-            if(offered > array[parent]){
+            if(offered > array[parent]){ //始终是offered与父元素进行比较
                 array[child] = array[parent];
             }else {
                 break;

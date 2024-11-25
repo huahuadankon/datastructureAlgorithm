@@ -50,7 +50,6 @@ public class BlockingQueue2<E> implements BlockingQueue<E> {
             }
             if(++tail == array.length){
                 tail = 0;
-
             }
         } finally {
             tailLock.unlock();

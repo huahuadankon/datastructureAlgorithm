@@ -57,7 +57,7 @@ public class ArrayQueue1<E> implements Queue<E>,Iterable<E> {
 
     @Override
     public boolean isFull() {
-        return (rear+1)%array.length == front;
+        return (rear+1)%array.length == front;//其实少利用了一个数组元素
     }
 
     @Override
