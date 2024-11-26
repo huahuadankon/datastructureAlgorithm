@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * @author liuyichen
  * @version 1.0
  * @date 2024/11/26 9:04
- * @description 双边循环快排
+ * @description 双边循环快排，快速排序是分治思想的典型
  */
 public class QuickSortHoare {
     private static void sort(int[] a) {

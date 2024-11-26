@@ -30,7 +30,7 @@ public class QuickSortHandleDuplicate {
         循环外 j 和 基准点交换，j 即为分区位置
      */
 
-    /**
+    /**p
      * 这里先i后j，还是先j后i都无所谓了，因为无论如何j最后都会指向小于或等于基准点的元素，i和j是平等的
      * @param a
      * @param left
