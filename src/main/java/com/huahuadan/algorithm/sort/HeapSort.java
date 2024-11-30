@@ -41,7 +41,6 @@ public class HeapSort {
             parent = max;
         }
 
-
     }
 
     public static void swap(int[] arr, int i, int j) {
