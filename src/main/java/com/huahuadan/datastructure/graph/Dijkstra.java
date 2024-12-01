@@ -38,7 +38,7 @@ public class Dijkstra {
         List<Vertex> list = new ArrayList<>(graph);
         source.dist = 0;
         while (!list.isEmpty()) {
-            //找到距离其实顶点距离最短的顶点作为当前顶点
+            //找到距离其实顶点距离最短的顶点作为当前顶点,此时不可能通过其他顶点来更新这个最小值(在所有边权值都不为负数的情况下)
             Vertex curr = chooseMinDistVertex(list);
             //更新当前顶点邻居顶点的距离
             updateNeighboursDist(curr);

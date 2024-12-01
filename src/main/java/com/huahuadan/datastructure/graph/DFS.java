@@ -53,7 +53,7 @@ public class DFS {
         stack.push(v);
         while (!stack.isEmpty()) {
             Vertex top = stack.pop();
-            top.visited = true;
+            top.visited = true;  //出栈时标记，后入栈的元素先出栈，不会被多次访问，除非出现有环的情况
             System.out.println(top.name);
             for (Edge e : top.edges) {
                 if(!e.linked.visited){

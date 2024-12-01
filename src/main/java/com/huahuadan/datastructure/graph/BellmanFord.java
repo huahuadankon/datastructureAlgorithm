@@ -3,7 +3,7 @@ package com.huahuadan.datastructure.graph;
 import java.util.List;
 
 /**
- * <h3>Bellman-Ford 算法，可以处理负边</h3>
+ * <h3>Bellman-Ford 算法，可以处理负边，但是无法处理负环，倾向于蛮力法</h3>
  */
 public class BellmanFord {
     public static void main(String[] args) {
@@ -56,6 +56,7 @@ public class BellmanFord {
         int size = graph.size();
         // 1. 进行 顶点个数 - 1 轮处理
         for (int i = 0; i < size - 1; i++) {//至关重要的一步 进行顶点个数 - 1 (V-1) 轮循环的原因是 最短路径树中，从源点到任何其他顶点的路径最多包含 V-1 条边
+            //遍历顺序未知，不能保证一次依次遍历就让每个顶点达到最小值
             // 2. 遍历所有的边
             for (Vertex s : graph) {
                 for (Edge edge : s.edges) {

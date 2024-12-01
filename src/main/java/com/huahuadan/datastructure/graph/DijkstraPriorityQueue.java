@@ -40,7 +40,7 @@ public class DijkstraPriorityQueue {
             // 3. 选取当前顶点
             Vertex curr = queue.peek();
             // 4. 更新当前顶点邻居距离
-            if(!curr.visited) {
+            if(!curr.visited) { //因为队列中重新加入了，所以一个队列可能存在两个指向同一个对象的引用，有可能会产生重复更新，虽然逻辑不会有影响，但是影响效率
                 updateNeighboursDist(curr, queue);
                 curr.visited = true;
             }
@@ -61,7 +61,7 @@ public class DijkstraPriorityQueue {
                 if (dist < n.dist) {
                     n.dist = dist;
                     n.prev = curr;
-                    queue.offer(n);
+                    queue.offer(n); //Java中的优先队列并不会因为元素值改变而自动调整，需要重新加入
                 }
             }
         }

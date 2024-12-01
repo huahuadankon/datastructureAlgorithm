@@ -35,17 +35,19 @@ public class BFS {
 
     private static void bfs(Vertex v) {
         LinkedList<Vertex> queue = new LinkedList<>();
-        v.visited = true;
         queue.offer(v);
+        v.visited = true; // 入队时立即标记为已访问
+
         while (!queue.isEmpty()) {
             Vertex poll = queue.poll();
             System.out.println(poll.name);
             for (Edge edge : poll.edges) {
                 if (!edge.linked.visited) {
-                    edge.linked.visited = true;
+                    edge.linked.visited = true; // 防止重复访问，如果不是入队时就标记已经访问，而是出队时标记已访问，后出队的元素很有可能被多次访问，例如在同一层级的三个顶点指向了同一个顶点。
                     queue.offer(edge.linked);
                 }
             }
         }
     }
+
 }
