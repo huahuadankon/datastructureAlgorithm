@@ -103,14 +103,14 @@ public class FloydWarShall {
             dist[1][0]   +   dist[0][2]
             dist[1][0]   +   dist[0][3]
          */
-        for(int k = 0; k < size; k++){
-            for(int i = 0; i < size; i++){
-                for(int j = 0; j < size; j++){
+        for(int k = 0; k < size; k++){ //最开始是v1
+            for(int i = 0; i < size; i++){ // 最开始也是v1
+                for(int j = 0; j < size; j++){ //v1,v2,v3,v4
                     //dist[i][k]   +   dist[k][j] // i行的顶点，借助k顶点，到达j列顶点
                     //dist[i][j]                  // i行顶点，直接到达j列顶点
                     if(dist[i][k]!=Integer.MAX_VALUE && dist[k][j]!=Integer.MAX_VALUE && dist[i][j]>dist[i][k]+dist[k][j]){
                         dist[i][j] = dist[i][k]+dist[k][j];
-                        prev[i][j] = prev[k][j];//如果通过顶点 k 更新路径更短，则路径变为i−>k−>j,此时顶点i到j的路径上j之前的那个顶点就是k
+                        prev[i][j] = prev[k][j];//如果通过顶点 k 更新路径更短，则路径变为i−>k−>j,原来的prv[i][j]表示i到j的前一个顶点，这里的前一个顶点更新成k也就是pre[k][j]
                     }
                 }
             }

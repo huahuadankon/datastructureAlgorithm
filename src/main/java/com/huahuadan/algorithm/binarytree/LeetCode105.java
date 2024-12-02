@@ -6,7 +6,7 @@ import java.util.Arrays;
  * @author liuyichen
  * @version 1.0
  * @date 2024/11/18 21:23
- * @description 根据前中序结果遍历二叉树
+ * @description 根据前中序结果构建二叉树
  */
 public class LeetCode105 {
     public static void main(String[] args) {
