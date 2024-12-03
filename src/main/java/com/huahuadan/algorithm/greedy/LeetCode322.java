@@ -4,7 +4,7 @@ package com.huahuadan.algorithm.greedy;
  * <h3>零钱兑换 - 贪心解法</h3>
  * <p>贪心解法：可能得到错误的解</p>
  */
-public class ChangeMakingProblemLeetcode322 {
+public class LeetCode322 {
     /*
             总金额 18
             5   2   1
@@ -59,7 +59,7 @@ public class ChangeMakingProblemLeetcode322 {
     }
 
     public static void main(String[] args) {
-        ChangeMakingProblemLeetcode322 leetcode = new ChangeMakingProblemLeetcode322();
+        LeetCode322 leetcode = new LeetCode322();
 //        int count = leetcode.coinChange(new int[]{5, 2, 1}, 18);
 //        int count = leetcode.coinChange(new int[]{25, 10, 5, 1}, 41);
 //        int count = leetcode.coinChange(new int[]{2}, 3);
