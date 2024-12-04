@@ -62,7 +62,7 @@ public class BellmanFord {
                 for (Edge edge : s.edges) {
                     // 3. 处理每一条边
                     Vertex e = edge.linked;
-                    if (s.dist != Integer.MAX_VALUE && s.dist + edge.weight < e.dist) {
+                    if (s.dist != Integer.MAX_VALUE && s.dist + edge.weight < e.dist) { //其实这里也用到了动态规划的思想，将数据存储在对象中
                         e.dist = s.dist + edge.weight;
                         e.prev = s;
                     }
