@@ -25,7 +25,6 @@ public class SingleList implements Iterable<Integer> {
 
     /**
      * 向链表头部添加
-     *
      * @param value 待添加值
      */
     public void addFirst(int value) {
@@ -38,7 +37,6 @@ public class SingleList implements Iterable<Integer> {
     /**
      * 遍历链表三种
      */
-
     public void loop(){
         Node p = head;
         while(p != null){

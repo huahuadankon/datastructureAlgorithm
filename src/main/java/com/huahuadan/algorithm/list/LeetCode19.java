@@ -48,7 +48,7 @@ public class LeetCode19 {
 //        ListNode head = ListNode.of(1,2);
         System.out.println(head);
         System.out.println(new LeetCode19()
-                .removeNthFromEnd2(head, 5));
+                .removeNthFromEnd(head, 5));
     }
 
 }

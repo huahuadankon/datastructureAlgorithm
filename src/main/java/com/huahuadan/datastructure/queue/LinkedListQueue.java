@@ -17,7 +17,7 @@ public class LinkedListQueue<E> implements Queue<E> , Iterable<E>{
             this.next = next;
         }
     }
-    private Node<E> head = new Node<E>(null, null);
+    private Node<E> head = new Node<E>(null, null); //哨兵节点
     private Node<E> tail = head;
     private int size = 0;
     private int capacity = Integer.MAX_VALUE;

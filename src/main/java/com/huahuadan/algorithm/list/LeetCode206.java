@@ -25,8 +25,8 @@ public class LeetCode206 {
         if (p == null || p.next == null) { // 不足两个节点
             return p; // 最后一个节点
         }
-        ListNode last = reverseList2(p.next);
-        p.next.next = p; //当前节点
+        ListNode last = reverseList2(p.next);//找到最后一个节点
+        p.next.next = p; //反转
         p.next = null;
         return last;
     }
@@ -47,19 +47,33 @@ public class LeetCode206 {
         return n1;
     }
 
-    //方法4，创建新链表，只不过不是new，而是利用指针的移动，不断让旧链表头部
-    public ListNode reverseList4(ListNode o1) {
-        if (o1 == null || o1.next == null) {
-            return o1;
+
+    //方法4，双指针法
+    public ListNode reverseList4(ListNode head) {
+        ListNode pre = null;
+        ListNode cur = head;
+        ListNode temp = null;
+        while (cur != null) {
+            temp = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = temp;
         }
-        ListNode n1 = null;
-        while (o1 != null) {
-            ListNode o2 = o1.next; //记录o2
-            o1.next = n1; //旧链表头部插入到新链表头部之前
-            n1 = o1; //更新新链表头指针
-            o1 = o2; //更新旧链表头指针
-        }
-        return n1;
+        return pre;
     }
+
+    //递归的另一种写法
+    public ListNode reverseList5(ListNode head) {
+       return reverse(null,head);
+    }
+    private ListNode reverse(ListNode pre, ListNode cur) {
+        if (cur == null) {
+            return pre;
+        }
+        ListNode temp = cur.next;//保存下一个节点
+        cur.next = pre;
+        return reverse(cur,temp);
+    }
+
 
 }
