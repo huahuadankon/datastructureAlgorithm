@@ -25,7 +25,7 @@ public class LeetCode150 {
         LinkedList<Integer> stack = new LinkedList<>();
         for (String token : tokens){
             switch (token){
-                case "+" ->{
+                    case "+" ->{
                     stack.push(stack.pop() + stack.pop());
                 }
                 case "-" ->{

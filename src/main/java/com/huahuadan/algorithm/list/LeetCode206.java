@@ -31,6 +31,7 @@ public class LeetCode206 {
         return last;
     }
 
+
     //方法3，不断将原链表的第二个值往头部移动
     public ListNode reverseList3(ListNode o1) {
         if (o1 == null || o1.next == null) { // 不足两个节点
